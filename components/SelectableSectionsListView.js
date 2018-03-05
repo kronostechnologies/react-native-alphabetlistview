@@ -1,18 +1,24 @@
 'use strict';
 /* jshint esnext: true */
 
-var React = require('react');
-var ReactNative = require('react-native');
-var {Component, PropTypes} = React;
-var {ListView, StyleSheet, View, NativeModules} = ReactNative;
-var UIManager = NativeModules.UIManager;
-var merge = require('merge');
 
-var SectionHeader = require('./SectionHeader');
-var SectionList = require('./SectionList');
-var CellWrapper = require('./CellWrapper');
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactNative, {
+  ListView,
+  StyleSheet,
+  View,
+  NativeModules,
+} from 'react-native';
+import merge from 'merge';
 
-class SelectableSectionsListView extends Component {
+import SectionHeader from './SectionHeader';
+import SectionList from './SectionList';
+import CellWrapper from './CellWrapper';
+
+const { UIManager } = NativeModules;
+
+export default class SelectableSectionsListView extends Component {
 
   constructor(props, context) {
     super(props, context);
@@ -377,5 +383,3 @@ SelectableSectionsListView.propTypes = {
   sectionListStyle: stylesheetProp
 
 };
-
-module.exports = SelectableSectionsListView;
