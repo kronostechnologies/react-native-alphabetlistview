@@ -9,14 +9,12 @@ import ReactNative, {
   NativeModules,
 } from 'react-native';
 
-const { UIManager } = NativeModules;
-
 var noop = () => {};
 var returnTrue = () => true;
 var firstSectionOffset = 0;
 var sectionHeight = 0;
 
-class SectionList extends Component {
+export default class SectionList extends Component {
 
   constructor(props, context) {
     super(props, context);
