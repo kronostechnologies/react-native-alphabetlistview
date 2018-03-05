@@ -1,11 +1,12 @@
 'use strict';
 
-var React = require('react');
-var ReactNative = require('react-native');
-var {Component, PropTypes} = React;
-var {View} = ReactNative;
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactNative, {
+  View
+} from 'react-native';
 
-class CellWrapper extends Component {
+export default class CellWrapper extends Component {
 
   componentDidMount() {
     this.props.updateTag && this.props.updateTag(ReactNative.findNodeHandle(this.refs.view), this.props.sectionId);
@@ -42,6 +43,3 @@ CellWrapper.propTypes = {
   updateTag: PropTypes.func
 
 };
-
-
-module.exports = CellWrapper;

@@ -1,10 +1,15 @@
 'use strict';
 
-var React = require('react');
-var ReactNative = require('react-native');
-var {Component, PropTypes} = React;
-var {StyleSheet, View, Text, NativeModules} = ReactNative;
-var UIManager = NativeModules.UIManager;
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactNative, {
+  StyleSheet,
+  View,
+  Text,
+  NativeModules,
+} from 'react-native';
+
+const { UIManager } = NativeModules;
 
 var noop = () => {};
 var returnTrue = () => true;
@@ -154,5 +159,3 @@ var styles = StyleSheet.create({
     color: '#CCCCCC'
   }
 });
-
-module.exports = SectionList;

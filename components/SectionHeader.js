@@ -1,12 +1,17 @@
 'use strict';
 
-var React = require('react');
-var ReactNative = require('react-native');
-var {Component, PropTypes} = React;
-var {StyleSheet, View, Text, NativeModules} = ReactNative;
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactNative, {
+  StyleSheet,
+  View,
+  Text,
+  NativeModules
+} from 'react-native';
 
-var UIManager = NativeModules.UIManager;
-class SectionHeader extends Component {
+const UIManager = NativeModules;
+
+export default class SectionHeader extends Component {
 
   componentDidMount() {
     this.props.updateTag && this.props.updateTag(ReactNative.findNodeHandle(this.refs.view), this.props.sectionId);
@@ -61,5 +66,3 @@ SectionHeader.propTypes = {
   updateTag: PropTypes.func
 
 };
-
-module.exports = SectionHeader;
