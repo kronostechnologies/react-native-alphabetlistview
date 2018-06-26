@@ -63,7 +63,7 @@ export default class SelectableSectionsListView extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data !== this.props.data) {
-     console.log('total height : ',  this.calculateTotalHeight(nextProps.data)) 
+     console.log('total height : ',  this.calculateTotalHeight(nextProps.data))
      this.calculateTotalHeight(nextProps.data);
     }
   }
@@ -80,12 +80,20 @@ export default class SelectableSectionsListView extends Component {
       .reduce((carry, key) => {
         var itemCount = data[key].length;
         carry += itemCount * this.props.cellHeight;
-        carry += this.props.sectionHeaderHeight;
+        carry += this.getSectionHeight(data[key]);
 
         this.sectionItemCount[key] = itemCount;
 
         return carry;
       }, 0);
+  }
+
+  getSectionHeight(section) {
+    return this.shouldShowSectionHeader(section) ? this.props.sectionHeaderHeight + 0.50 : 0;
+  }
+
+  shouldShowSectionHeader(section) {
+    return section.length > 0 || !this.props.hideEmptySectionHeader;
   }
 
   updateTagInSectionMap(tag, section) {
@@ -103,19 +111,20 @@ export default class SelectableSectionsListView extends Component {
 
     if (!this.props.useDynamicHeights) {
       var cellHeight = this.props.cellHeight;
-      var sectionHeaderHeight = this.props.sectionHeaderHeight;
       var keys = Object.keys(this.props.data);
       var index = keys.indexOf(section);
 
-      var numcells = 0;
+      var totalCellsHeight = 0;
+      var totalSectionsHeight = 0;
       for (var i = 0; i < index; i++) {
-        numcells += this.props.data[keys[i]].length;
+        totalCellsHeight += this.props.data[keys[i]].length * cellHeight;
+        totalSectionsHeight += this.getSectionHeight(this.props.data[keys[i]]);
       }
 
-      sectionHeaderHeight = index * sectionHeaderHeight;
-      y += numcells * cellHeight + sectionHeaderHeight;
+      y += totalCellsHeight + totalSectionsHeight;
 
       var maxY = this.totalHeight - this.containerHeight + headerHeight;
+      maxY = maxY > 0 ? maxY : 0;
       y = y > maxY ? maxY : y;
 
       this.refs.listview.scrollTo({ x:0, y, animated: true });
@@ -139,15 +148,17 @@ export default class SelectableSectionsListView extends Component {
       this.props.getSectionTitle(sectionId) :
       sectionId;
 
-    return (
-      <SectionHeader
-        component={this.props.sectionHeader}
-        title={title}
-        sectionId={sectionId}
-        sectionData={sectionData}
-        updateTag={updateTag}
-      />
-    );
+    if (this.shouldShowSectionHeader(sectionData)) {
+      return (
+          <SectionHeader
+            component={this.props.sectionHeader}
+            title={title}
+            sectionId={sectionId}
+            sectionData={sectionData}
+            updateTag={updateTag}
+          />
+        );
+    }
   }
 
   renderFooter() {
@@ -271,6 +282,10 @@ var stylesheetProp = PropTypes.oneOfType([
   PropTypes.object,
 ]);
 
+SelectableSectionsListView.defaultProps = {
+  hideEmptySectionHeader: false
+}
+
 SelectableSectionsListView.propTypes = {
   /**
    * The data to render in the listview
@@ -380,6 +395,12 @@ SelectableSectionsListView.propTypes = {
   /**
    * Styles to pass to the section list container
    */
-  sectionListStyle: stylesheetProp
+  sectionListStyle: stylesheetProp,
+
+  /**
+   * Whether to hide section header when no element in it, section will still be
+   * displayed in the sectionList
+   */
+  hideEmptySectionHeader: PropTypes.bool
 
 };
