@@ -260,7 +260,7 @@ export default class SelectableSectionsListView extends Component {
     props.style = void 0;
 
     return (
-      <View ref="view" style={[styles.container, this.props.style]}>
+      <View collapsable={false} ref="view" style={[styles.container, this.props.style]}>
         <ListView
           ref="listview"
           {...props}
